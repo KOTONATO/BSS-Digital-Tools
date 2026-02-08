@@ -21,6 +21,10 @@ The script automates complex calculations related to acquiring in-game items:
 *   **Accuracy:** Eliminates human calculation errors.
 *   **Convenience:** Intuitive and user-friendly interface.
 
+## No Key
+
+<img src="idk/yeah.png" alt="Alt text" width="125" height="125"> <img src="idk/yeah.png" alt="Alt text" width="125" height="125"> <img src="idk/yeah.png" alt="Alt text" width="125" height="125"> <img src="idk/yeah.png" alt="Alt text" width="125" height="125">
+
 ## OPEN SOOOOOOOOUUUURCEEEEEE!!!
 
-<img src="idk/yeah.png" alt="Alt text" width="250" height="125"> <img src="idk/yeah.png" alt="Alt text" width="250" height="125">
+<img src="idk/yeah.png" alt="Alt text" width="500" height="125">
