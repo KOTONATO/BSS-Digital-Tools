@@ -1,3 +1,4 @@
+local ContentProvider = game:GetService("ContentProvider")
 local players = game:GetService("Players");
 local httpService = game:GetService("HttpService");
 
@@ -10,9 +11,13 @@ local CONFIG = {
         showcraft = true,
         showprice = true,
         left = true,
+        nodesTransparency = 95,
         webhook = "",
+        autoSave = false
     },
-    ["funcs"] = {};
+    ["funcs"] = {
+        configPath = "BSSDigitalTools/config.json";
+    };
 }
 
 local imgui = loadstring(game:HttpGet('https://github.com/depthso/Roblox-ImGUI/raw/main/ImGui.lua'))()
@@ -41,6 +46,7 @@ tabs.webhook.headers = {
 };
 tabs.settings.headers = {
     general = tabs.settings.tab:CollapsingHeader({Title = "General", Open = true}),
+    config = tabs.settings.tab:CollapsingHeader({Title = "Config", Open = true}),
 };
 
 -- SHIT FUNCTIONS
@@ -88,12 +94,17 @@ function funcs.progress(info: table): number -- info {Honey, Ingredients}
 
     return funcs.percent(numTotal, weNeedTotal);
 end
+function funcs.makeNodeCute(node)
+    node.ChildContainer.BackgroundTransparency = CONFIG.settings.nodesTransparency / 100;
+    node.ChildContainer.BackgroundColor3 = Color3.fromRGB(66, 150, 250);
+end
 
 -- MAIN UI FUNCTIONS
 local uiFuncs = {};
 function uiFuncs.createPrice(parent, item): nil -- item = {Name, Count}
     if ITEMS.Shops[item.Name] ~= nil and CONFIG.settings.showprice then
         local priceNode = parent:TreeNode({Title = "💸 Price"});
+        funcs.makeNodeCute(priceNode);
         local shopItem = ITEMS.Shops[item.Name];
         local price = math.ceil(item.Count / shopItem.Count) * shopItem.Price;
         
@@ -110,6 +121,7 @@ end
 function uiFuncs.createCraft(parent, item: table) -- item = {Name, Count}
     if ITEMS.Blender[item.Name] ~= nil and CONFIG.settings.showcraft then
         local craftNode = parent:TreeNode({Title = "❓ Craft"});
+        funcs.makeNodeCute(craftNode);
         for ingName, ingValue in ITEMS.Blender[item.Name] do
             local craftCount = funcs.getItem(ingName);
             local dif = item.Count - funcs.getItem(item.Name);
@@ -122,15 +134,17 @@ function uiFuncs.createCraft(parent, item: table) -- item = {Name, Count}
     end
 end
 function uiFuncs.createIngredients(parent, item: table): nil
+    local node = parent:TreeNode({Title = "❓ Ingredients"});
+    funcs.makeNodeCute(node);
     for ingName, ingValue in item.Ingredients do
         local itemCount = funcs.getItem(ingName); -- item count
         local left = ingValue - itemCount;
         local leftText = if CONFIG.settings.left then " (Left: "..funcs.formatNum(left)..")" else "";
         local text = ingName..": "..funcs.formatNum(itemCount).." / "..funcs.formatNum(ingValue)..leftText;
-        local label = parent:Label({Text = text}); -- goal
+        local label = node:Label({Text = text}); -- goal
         if itemCount >= ingValue then label.TextColor3 = Color3.fromRGB(0, 255, 0) end;
-        uiFuncs.createCraft(parent, {Name = ingName, Count = ingValue});
-        uiFuncs.createPrice(parent, {Name = ingName, Count = ingValue});
+        uiFuncs.createCraft(node, {Name = ingName, Count = ingValue});
+        uiFuncs.createPrice(node, {Name = ingName, Count = ingValue});
     end
 end
 function uiFuncs.createItem(item: table): nil
@@ -152,8 +166,7 @@ function uiFuncs.createItem(item: table): nil
     if progress >= 100 then progressLabel.TextColor3 = Color3.fromRGB(0, 255, 0) end;
     if playerHoney >= item.Honey then honeyLabel.TextColor3 = Color3.fromRGB(0, 255, 0) end;
     
-    local node = header:TreeNode({Title = "❓ Ingredients"});
-    uiFuncs.createIngredients(node, item);
+    uiFuncs.createIngredients(header, item);
 
     return header;
 end
@@ -173,6 +186,7 @@ end
 
 function uiFuncs.createSettings()
     local general = tabs.settings.headers.general;
+    local configHeader = tabs.settings.headers.config;
     general:Button({Text = "Refresh Information", Callback = function()
         uiFuncs.updateUi()
     end});
@@ -182,27 +196,51 @@ function uiFuncs.createSettings()
     	Label = "Show Item Craft", Value = CONFIG.settings.showcraft,
     	Callback = function(self, Value)
             CONFIG.settings.showcraft = Value;
-            CONFIG.funcs.saveConfig();
+            CONFIG.funcs.autoSaveConfig()
     	end,
     });
     general:Checkbox({
     	Label = "Show Item Price", Value = CONFIG.settings.showprice,
     	Callback = function(self, Value)
     		CONFIG.settings.showprice = Value;
-            CONFIG.funcs.saveConfig();
+            CONFIG.funcs.autoSaveConfig()
     	end,
     });
     general:Checkbox({
     	Label = "Show Items Left", Value = CONFIG.settings.left,
     	Callback = function(self, Value)
     		CONFIG.settings.left = Value;
-            CONFIG.funcs.saveConfig();
+            CONFIG.funcs.autoSaveConfig()
     	end,
     });
+    print(CONFIG.settings.nodesTransparency);
+    general:ProgressSlider({Label = "Tree Node Transparency", Value = CONFIG.settings.nodesTransparency,
+    	MinValue = 0,
+    	MaxValue = 100,
+        Callback = function(self, value)
+            CONFIG.settings.nodesTransparency = value;
+            CONFIG.funcs.autoSaveConfig();
+        end
+    })
+    
+    -- config header
+    configHeader:Checkbox({
+    	Label = "Auto Save", Value = CONFIG.settings.autoSave,
+    	Callback = function(self, Value)
+    		CONFIG.settings.autoSave = Value;
+            CONFIG.funcs.autoSaveConfig()
+    	end,
+    });
+    configHeader:Button({Text = "Save Settings", Callback = function()
+        CONFIG.funcs.saveConfig()
+    end});
+    configHeader:Button({Text = "Delete Saved Settings", Callback = function()
+        CONFIG.funcs.deleteConfig()
+    end});
 end
 function uiFuncs.createWebhook(): nil
     local general = tabs.webhook.headers.general;
-    general:Label({Text = "‼‼‼ NOT WORKING (W.I.P) ‼‼‼", TextColor3 = Color3.fromRGB(255,0,0)});
+    general:Label({Text = "‼‼‼ NOT WORKING (W.I.P) ‼‼‼", TextColor3 = Color3.fromRGB(255, 45, 45)});
     general:Label({Text = "🔗 Webhook URL"});
     local input = general:InputText({
         PlaceHolder = "https://discord.com/api/webhooks/...",
@@ -210,7 +248,7 @@ function uiFuncs.createWebhook(): nil
         Value = CONFIG.settings.webhook,
         Callback = function(self, Value)
             CONFIG.settings.webhook = Value;
-            CONFIG.funcs.saveConfig();
+            CONFIG.funcs.autoSaveConfig()
         end,
     });
     general:Button({Text = "Send Test", Callback = function()
@@ -236,10 +274,19 @@ function CONFIG.funcs.saveConfig()
     makefolder("BSSDigitalTools");
     writefile("BSSDigitalTools/config.json", httpService:JSONEncode(CONFIG.settings));
 end
+function CONFIG.funcs.autoSaveConfig()
+    if CONFIG.settings.autoSave then
+        CONFIG.funcs.saveConfig();
+    end
+end
+function CONFIG.funcs.deleteConfig()
+    if isfile(CONFIG.funcs.configPath) then
+        delfile(CONFIG.funcs.configPath);
+    end
+end
 function CONFIG.funcs.loadConfig()
-    local configPath = "BSSDigitalTools/config.json";
-    if isfile(configPath) then
-        local data = httpService:JSONDecode(readfile(configPath));
+    if isfile(CONFIG.funcs.configPath) then
+        local data = httpService:JSONDecode(readfile(CONFIG.funcs.configPath));
         for index, value in data do
             if CONFIG.settings[index] ~= nil then
                 print("Loaded config "..index..": "..tostring(value));
