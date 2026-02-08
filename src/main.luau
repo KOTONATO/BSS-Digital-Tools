@@ -146,7 +146,7 @@ function uiFuncs.createIngredients(parent, item: table): nil
     funcs.makeNodeCute(node);
     for ingName, ingValue in item.Ingredients do
         local itemCount = funcs.getItem(ingName); -- item count
-        local left = ingValue - itemCount;
+        local left = if ingValue - itemCount < 0 then 0 else ingValue - itemCount;
         local leftText = if CONFIG.settings.left then " (Left: "..funcs.formatNum(left)..")" else "";
         local text = ingName..": "..funcs.formatNum(itemCount).." / "..funcs.formatNum(ingValue)..leftText;
         local label = node:Label({Text = text}); -- goal
