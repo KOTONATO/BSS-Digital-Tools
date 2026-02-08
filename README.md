@@ -1,6 +1,6 @@
 # Digital Tools v1.0
 
-Specialized script for Bee Swarm Simulator developed for purchase calculations.
+Specialized script for **Bee Swarm Simulator** developed for purchase calculations.
 
 <img src="idk/icon.png" alt="Alt text" width="125" height="125"> <img src="idk/icon.png" alt="Alt text" width="125" height="125"> <img src="idk/icon.png" alt="Alt text" width="125" height="125"> <img src="idk/icon.png" alt="Alt text" width="125" height="125">
 
