@@ -6,7 +6,7 @@ return {
             Honey = 1500000000,
             Ingredients = {
                 ["Enzymes"] = 75,
-                ["Glitter"] = 100,
+                ["Glitter"] = 25,
                 ["Star Jelly"] = 10,
                 ["Spirit Petal"] = 1
             }
@@ -20,7 +20,8 @@ return {
                 ["Tropical Drink"] = 150,
                 ["Swirled Wax"] = 75,
                 ["Super Smoothie"] = 50,
-                ["Stinger"] = 200
+                ["Stinger"] = 150,
+                ["Comforting Vial"] = 3
             }
         },
         ["Dark Scythe"] = {
@@ -29,10 +30,11 @@ return {
             Honey = 2500000000000,
             Ingredients = {
                 ["Red Extract"] = 1500,
-                ["Hard Wax"] = 150,
-                ["Caustic Wax"] = 75,
+                ["Hard Wax"] = 100,
+                ["Caustic Wax"] = 50,
                 ["Super Smoothie"] = 50,
-                ["Stinger"] = 200
+                ["Stinger"] = 150,
+                ["Invigorating Vial"] = 3
             }
         },
         ["Gummy Baller"] = {
@@ -40,11 +42,12 @@ return {
             Type = "tools",
             Honey = 10000000000000,
             Ingredients = {
-                ["Gumdrops"] = 2500,
+                ["Gumdrops"] = 2000,
                 ["Glue"] = 1500,
                 ["Caustic Wax"] = 50,
                 ["Super Smoothie"] = 50,
-                ["Turpentine"] = 5
+                ["Turpentine"] = 5,
+                ["Satisfying Vial"] = 3
             }
         },
     },
@@ -131,7 +134,8 @@ return {
                 ["Coconut"] = 150,
                 ["Glue"] = 100,
                 ["Oil"] = 100,
-                ["Tropical Drink"] = 50
+                ["Tropical Drink"] = 50,
+                ["Refreshing Vial"] = 1
             }
         },
         ["Gummy Boots"] = {
@@ -142,7 +146,9 @@ return {
                 ["Red Extract"] = 250,
                 ["Blue Extract"] = 250,
                 ["Glue"] = 500,
-                ["Glitter"] = 250
+                ["Glitter"] = 250,
+                ["Satisfying Vial"] = 1,
+                ["Motivating Vial"] = 1
             }
         },
     },
@@ -152,10 +158,11 @@ return {
             Type = "bags",
             Honey = 25000000000,
             Ingredients = {
-                ["Coconut"] = 150,
-                ["Red Extract"] = 100,
+                ["Coconut"] = 250,
+                ["Red Extract"] = 150,
                 ["Blue Extract"] = 150,
-                ["Tropical Drink"] = 150
+                ["Tropical Drink"] = 150,
+                ["Refreshing Vial"] = 2
             }
         },
     },
