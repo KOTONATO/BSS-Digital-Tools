@@ -264,5 +264,43 @@ return {
             ["Star Jelly"] = 100,
             ["Honeysuckle"] = 1000
         }
+    },
+    Shops = {
+        ["Royal Jelly"] = {
+            Price = 1000000,
+            Count = 1,
+            Currency = "Honey"
+        },
+        ["Basic"] = {
+            Price = 10000000,
+            Count = 1,
+            Currency = "Honey"
+        },
+        ["Treat"] = {
+            Price = 10000,
+            Count = 1,
+            Currency = "Honey"
+        },
+        
+        ["Magic Bean"] = {
+            Price = 20,
+            Count = 1,
+            Currency = "Ticket"
+        },
+        ["Stinger"] = {
+            Price = 10,
+            Count = 1,
+            Currency = "Ticket"
+        },
+        ["Gumdrops"] = {
+            Price = 1,
+            Count = 3,
+            Currency = "Ticket"
+        }
+        -- ["Ticket"] = function(count: number): number
+        --     local n = count;
+        --     local t = ?;
+        --     return (n*(2 * t + 4000 * (n - 1)) / 2)
+        -- end,
     }
 };
